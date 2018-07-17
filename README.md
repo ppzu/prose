@@ -1,8 +1,8 @@
 # prose [![Build Status](https://travis-ci.org/jdkato/prose.svg?branch=master)](https://travis-ci.org/jdkato/prose) [![Build status](https://ci.appveyor.com/api/projects/status/24bepq85nnnk4scr?svg=true)](https://ci.appveyor.com/project/jdkato/prose) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/gopkg.in/jdkato/prose.v2) [![Coverage Status](https://coveralls.io/repos/github/jdkato/prose/badge.svg?branch=v2)](https://coveralls.io/github/jdkato/prose?branch=v2) [![Go Report Card](https://goreportcard.com/badge/github.com/jdkato/prose)](https://goreportcard.com/report/github.com/jdkato/prose) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#natural-language-processing)
 
-`prose` is a natural language processing library (English only, at the moment) in *pure Go*. It supports tokenization, segmentation, part-of-speech tagging, and named-entity extraction.
+`prose` is a natural language processing library for English in *pure Go*. It supports tokenization, segmentation, part-of-speech tagging, and named-entity extraction.
 
-You can can find a more detailed summary on the library's performance here: [Introducing `prose` v2.0.0: Bringing NLP *to Go*](https://medium.com/@errata.ai/introducing-prose-v2-0-0-bringing-nlp-to-go-a1f0c121e4a5).
+You can find a more detailed summary on the library's performance here: [Introducing `prose` v2.0.0: Bringing NLP *to Go*](https://medium.com/@errata.ai/introducing-prose-v2-0-0-bringing-nlp-to-go-a1f0c121e4a5).
 
 > **NOTE**: If you're looking for v1.0.0's README, you can still [find it here](https://github.com/jdkato/prose/blob/v1/README.md).
 
@@ -20,10 +20,11 @@ $ go get gopkg.in/jdkato/prose.v2
 * [Tokenizing](#tokenizing)
 * [Segmenting](#segmenting)
 * [Tagging](#tagging)
-* [NER](#ner)
+* [Named-entity recognition (NER)](#ner)
 
 ### Overview
 
+A hello world natural language processing go program using `prose`:
 
 ```go
 package main
@@ -74,7 +75,7 @@ tokenization -> POS tagging -> NE extraction
              segmentation
 ```
 
-Each step may be disabled (assuming later steps aren't required) by passing the appropriate [*functional option*](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis). To disable named-entity extraction, for example, you'd do the following:
+Each step may be disabled (assuming later steps aren't required) by passing the appropriate [*functional option*](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis). An example for disabling named-entity extraction:
 
 ```go
 doc, err := prose.NewDocument(
@@ -129,7 +130,7 @@ func main() {
 
 ### Segmenting
 
-`prose` includes one of the most accurate sentence segmenters available, according to the [Golden Rules](https://github.com/diasks2/pragmatic_segmenter#comparison-of-segmentation-tools-libraries-and-algorithms) created by the developers of the `pragmatic_segmenter`.
+`prose` includes one of the most accurate sentence segmenters, according to the [Golden Rules](https://github.com/diasks2/pragmatic_segmenter#comparison-of-segmentation-tools-libraries-and-algorithms) created by the developers of the `pragmatic_segmenter`.
 
 | Name                | Language | License   | GRS (English)  | GRS (Other) | Speed†   |
 |---------------------|----------|-----------|----------------|-------------|----------|
@@ -143,7 +144,7 @@ func main() {
 | SRX English         | Ruby     | GNU GPLv3 | 30.77% (16/52) | 28.57%      | 6.19 s   |
 | Scapel              | Ruby     | GNU GPLv3 | 28.85% (15/52) | 20.00%      | 0.13 s   |
 
-> † The original tests were performed using a *MacBook Pro 3.7 GHz Quad-Core Intel Xeon E5 running 10.9.5*, while `prose` was timed using a *MacBook Pro 2.9 GHz Intel Core i7 running 10.13.3*.
+> † The original tests were performed on a *MacBook Pro 3.7 GHz Quad-Core Intel Xeon E5 running 10.9.5*, while `prose` was timed using a *MacBook Pro 2.9 GHz Intel Core i7 running 10.13.3*.
 
 ```go
 package main
@@ -183,7 +184,7 @@ func main() {
 
 (See [`scripts/test_model.py`](https://github.com/jdkato/aptag/blob/master/scripts/test_model.py) for more information.)
 
-The full list of supported POS tags is given below.
+The list of all the supported POS tags is given below.
 
 | TAG        | DESCRIPTION                               |
 |------------|-------------------------------------------|
@@ -235,7 +236,7 @@ The full list of supported POS tags is given below.
 
 ### NER
 
-`prose` v2.0.0 includes a much improved version of v1.0.0's chunk package, which can identify people (`PERSON`) and geographical/political Entities (`GPE`) by default.
+`prose` v2.0.0 includes a much improved NER version of v1.0.0's chunk package. The NER functionality in v2.0.0 can identify people (`PERSON`) and geographical/political Entities (`GPE`) by default.
 
 ```go
 package main
@@ -254,5 +255,4 @@ func main() {
 }
 ```
 
-However, in an attempt to make this feature more useful, we've made it straightforward to train your own models for specific use cases. See [Prodigy + `prose`: Radically efficient machine teaching *in Go*](https://medium.com/@errata.ai/prodigy-prose-radically-efficient-machine-teaching-in-go-93389bf2d772) for a tutorial.
-
+In an attempt to make this feature more useful, we've made it straightforward to train your own models for specific use cases. See [Prodigy + `prose`: Radically efficient machine teaching *in Go*](https://medium.com/@errata.ai/prodigy-prose-radically-efficient-machine-teaching-in-go-93389bf2d772) for a tutorial.
